@@ -49,7 +49,7 @@ const componentPath = {
     element: React.ReactNode,
   ) {
     instance.componentChildIndex = 0;
-    instance.componentChildIndexMap = new Map();
+    instance.componentChildIndexMap.clear();
     return (
       <ComponentContext.Provider value={getComponentContext(instance)}>
         {element}
