@@ -19,19 +19,15 @@ const componentPath = {
   },
 
   updateComponentPath(instance: WorkerRenderComponent) {
-    const { parent, app } = instance.context as ComponentContextValue;
+    const { parent } = instance.context as ComponentContextValue;
     const { componentChildIndexMap } = parent;
     if (componentChildIndexMap.has(instance)) {
       instance.componentIndex = componentChildIndexMap.get(instance)!;
     } else {
       instance.componentIndex = ++parent.componentChildIndex;
       componentChildIndexMap.set(instance, instance.componentIndex);
+      instance.componentPath = '';
     }
-    instance.componentPath = '';
-    app.componentIdPathMap.set(
-      instance.id,
-      componentPath.getComponentPath(instance),
-    );
   },
 
   getComponentPath(instance: WorkerRenderComponent) {

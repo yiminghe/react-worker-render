@@ -15,35 +15,42 @@ class App
   componentChildIndexMap = new Map();
   newComponentsPathIdMap = {};
   newComponentsIdStateMap = {};
-  pendingIdStateMap = {};
+  pendingIdStateMap: Record<string, any> = {};
+  newComponentIds: Set<string> = new Set();
   components: Map<string, WorkerRenderComponent> = new Map();
-  nativeEventHandles: Record<string, () => void>;
+  eventHandles: Record<string, () => void>;
   componentSpec = null!;
-
   constructor(props: any) {
     super(props);
-    this.nativeEventHandles = {};
+    this.eventHandles = {};
     this.id = '1';
     this.addComponent(this);
   }
+  setStateState(component: WorkerRenderComponent, state: any) {
+    if (this.newComponentIds.has(component.id)) {
+      return;
+    }
+    const { pendingIdStateMap } = this;
+    const current = pendingIdStateMap[component.id] || {};
+    Object.assign(current, state);
+    pendingIdStateMap[component.id] = current;
+  }
   addComponent(component: WorkerRenderComponent) {
+    if (!this.components.has(component.id)) {
+      this.newComponentIds.add(component.id);
+    }
     this.components.set(component.id, component);
   }
   removeComponent(component: WorkerRenderComponent) {
+    this.newComponentIds.delete(component.id);
     this.components.delete(component.id);
   }
   getNativeEventHandle = (name: string) => {
-    const { nativeEventHandles } = this;
-    if (nativeEventHandles[name]) {
-      return nativeEventHandles[name];
-    }
+    return name;
   };
   getComponentEventHandle = (name: string) => {
     return name;
   };
-  setStateState() {
-    return;
-  }
   render(): JSX.Element {
     const componentDesc = getComponentDesc('main');
     const element = componentDesc.render({

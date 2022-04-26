@@ -6,6 +6,7 @@ import componentPath from '../common/componentPath';
 import ComponentContext, {
   ComponentContextValue,
 } from '../common/ComponentContext';
+import { WorkerComponent } from './types';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
 
@@ -27,38 +28,63 @@ export function getComponentClass(name: string): React.ComponentClass {
     componentPath = '';
     componentChildIndex = 0;
     componentChildIndexMap = new Map();
-    nativeEventHandles: Record<string, () => void>;
+    eventHandles: Record<string, () => void>;
     componentSpec = componentSpec;
+    publicInstance: WorkerComponent;
 
     static contextType = ComponentContext;
 
     constructor(props: any) {
       super(props);
-      this.id = ++gid + '';
-      this.nativeEventHandles = {};
+      this.id = '';
+      this.publicInstance = {
+        props,
+        state: {},
+        setState: this.setStateState,
+      };
+      this.eventHandles = {};
+      if (componentSpec.getInitialState) {
+        componentSpec.getInitialState.call(this.publicInstance);
+      }
       this.state = {
         __self: this,
-        state: {},
+        state: this.publicInstance.state,
       };
     }
 
-    static getDerivedStateFromProps(_: any, { __self }: any) {
+    setStateState = (newState: any) => {
+      this.setState(({ state }) => {
+        let ret: any = {};
+        if (typeof newState === 'function') {
+          ret = { state: newState(state) };
+        } else {
+          ret = {
+            state: newState,
+          };
+        }
+        this.getContext().app.setStateState(this, ret.state);
+        return ret;
+      });
+    };
+
+    static getDerivedStateFromProps(nextProps: any, { __self }: any) {
       const instance: Component = __self;
       componentPath.updateComponentPath(instance);
-      let state;
       const { app } = instance.context as ComponentContextValue;
-      if (instance.id) {
-        state = instance.state.state;
-      } else {
-        const path = componentPath.getComponentPath(instance);
-        instance.id = app.newComponentsPathIdMap[path];
-        if (!instance.id) {
-          throw new Error(`Can not find id from path: ${path}`);
-        }
+      if (!instance.id) {
+        instance.id = ++gid + '';
         app.addComponent(instance);
-        state = app.newComponentsIdStateMap[instance.id];
       }
-      return { state };
+      if (instance.componentSpec.getDerivedStateFromProps) {
+        const state = { ...instance.state.state };
+        const newState = instance.componentSpec.getDerivedStateFromProps(
+          nextProps,
+          state,
+        );
+        Object.assign(state, newState);
+        instance.publicInstance.state = state;
+        return { state };
+      }
     }
 
     getContext() {
@@ -70,14 +96,20 @@ export function getComponentClass(name: string): React.ComponentClass {
     }
 
     getNativeEventHandle = (name: string) => {
-      const { nativeEventHandles } = this;
-      if (nativeEventHandles[name]) {
-        return nativeEventHandles[name];
-      }
+      return name;
     };
 
     getComponentEventHandle = (name: string) => {
-      return name;
+      const { eventHandles } = this;
+      if (eventHandles[name]) {
+        return eventHandles[name];
+      }
+      const publicInstance = this.publicInstance as any;
+      const handle = (...args: any) => {
+        publicInstance[name](...args);
+      };
+      eventHandles[name] = handle;
+      return handle;
     };
 
     render(): JSX.Element {
