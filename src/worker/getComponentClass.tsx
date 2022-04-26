@@ -31,25 +31,41 @@ export function getComponentClass(name: string): React.ComponentClass {
     eventHandles: Record<string, () => void>;
     componentSpec = componentSpec;
     publicInstance: WorkerComponent;
+    componentName = name;
 
     static contextType = ComponentContext;
+
+    static defaultProps = componentSpec.defaultProps;
 
     constructor(props: any) {
       super(props);
       this.id = '';
       this.publicInstance = {
-        props,
-        state: {},
         setState: this.setStateState,
-      };
+      } as any;
+      Object.defineProperty(this.publicInstance, 'props', {
+        get: () => {
+          return this.props;
+        },
+      });
+      Object.defineProperty(this.publicInstance, 'state', {
+        get: () => {
+          return this.state.state;
+        },
+      });
       this.eventHandles = {};
       if (componentSpec.getInitialState) {
         componentSpec.getInitialState.call(this.publicInstance);
       }
       this.state = {
         __self: this,
-        state: this.publicInstance.state,
+        state: {},
       };
+    }
+
+    callMethod(method: string, args: any[]): void {
+      const publicInstance: any = this.publicInstance;
+      publicInstance[method](...args);
     }
 
     setStateState = (newState: any) => {
@@ -82,7 +98,6 @@ export function getComponentClass(name: string): React.ComponentClass {
           state,
         );
         Object.assign(state, newState);
-        instance.publicInstance.state = state;
         return { state };
       }
     }
@@ -91,7 +106,21 @@ export function getComponentClass(name: string): React.ComponentClass {
       return this.context as ComponentContextValue;
     }
 
+    componentDidMount() {
+      componentSpec.componentDidMount?.call(this.publicInstance);
+    }
+
+    componentDidUpdate(prevProps: any, prevState: any) {
+      const { publicInstance } = this;
+      componentSpec.componentDidUpdate?.call(
+        publicInstance,
+        prevProps,
+        prevState.state,
+      );
+    }
+
     componentWillUnmount() {
+      componentSpec.componentWillUnmount?.call(this.publicInstance);
       this.getContext().app.removeComponent(this);
     }
 
@@ -112,7 +141,7 @@ export function getComponentClass(name: string): React.ComponentClass {
       return handle;
     };
 
-    render(): JSX.Element {
+    render(): React.ReactNode {
       const element = componentSpec.render({
         native: nativeComponents,
         props: this.props,

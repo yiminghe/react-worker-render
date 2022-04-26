@@ -1721,6 +1721,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-reconciler@npm:^0.26.6":
+  version: 0.26.6
+  resolution: "@types/react-reconciler@npm:0.26.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Freact-reconciler%2F-%2Freact-reconciler-0.26.6.tgz"
+  dependencies:
+    "@types/react": "*"
+  checksum: 5c96f40338f2ccc544018610b42f467945450a8448b042ce5a052a3a45820ccd028b1fb65157c99f5889a10cd1e17093252c54c56a002bc64acadd6d5a9e4b08
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:*, @types/react@npm:^18.0.6":
   version: 18.0.6
   resolution: "@types/react@npm:18.0.6::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Freact%2F-%2Freact-18.0.6.tgz"
@@ -6732,6 +6741,7 @@ __metadata:
     "@types/node": ^17.0.21
     "@types/react": ^18.0.6
     "@types/react-dom": ^18.0.2
+    "@types/react-reconciler": ^0.26.6
     "@typescript-eslint/eslint-plugin": ^5.15.0
     "@typescript-eslint/parser": ^5.15.0
     eslint: ^8.11.0
