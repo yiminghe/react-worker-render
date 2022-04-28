@@ -6,6 +6,8 @@ import componentPath from '../common/componentPath';
 import ComponentContext, {
   ComponentContextValue,
 } from '../common/ComponentContext';
+import Input from './native/Input';
+import { noop } from '../common/utils';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
 
@@ -37,18 +39,11 @@ export function getComponentClass(name: string): React.ComponentClass {
         state: {},
       };
       Object.defineProperty(this.publicInstance, 'props', {
-        get: () => {
-          return this.props;
-        },
+        get: this.getInstanceProps,
       });
       Object.defineProperty(this.publicInstance, 'state', {
-        get: () => {
-          return this.state.state;
-        },
+        get: this.getInstanceState,
       });
-    }
-    callMethod() {
-      return;
     }
     static getDerivedStateFromProps(_: any, { __self }: any) {
       const instance: Component = __self;
@@ -68,6 +63,12 @@ export function getComponentClass(name: string): React.ComponentClass {
       return {};
     }
 
+    getInstanceProps = () => {
+      return this.props;
+    };
+    getInstanceState() {
+      return this.state.state;
+    }
     getContext() {
       return this.context as ComponentContextValue;
     }
@@ -75,6 +76,8 @@ export function getComponentClass(name: string): React.ComponentClass {
     componentDidMount() {
       componentSpec.componentDidMount?.call(this.publicInstance);
     }
+
+    callMethod = noop;
 
     componentDidUpdate(prevProps: any, prevState: any) {
       const { publicInstance } = this;
@@ -104,6 +107,7 @@ export function getComponentClass(name: string): React.ComponentClass {
         };
         app.postMessage(msg);
       };
+      (nativeEventHandles as any).handleName = name;
       return nativeEventHandles[name];
     };
 
@@ -112,13 +116,13 @@ export function getComponentClass(name: string): React.ComponentClass {
     };
 
     render(): React.ReactNode {
-      const element = componentSpec.render({
+      const element = componentSpec.render.call({
         native: nativeComponents,
         props: this.props,
         state: this.state.state,
         getNativeEventHandle: this.getNativeEventHandle,
         getComponentEventHandle: this.getComponentEventHandle,
-        getComponentClass,
+        getComponent: getComponentClass,
       });
       return componentPath.renderWithComponentContext(this, element);
     }
@@ -130,3 +134,7 @@ export function getComponentClass(name: string): React.ComponentClass {
   componentClassCache[name] = C;
   return C;
 }
+
+Object.assign(nativeComponents, {
+  input: (Input as any) || getComponentClass('input'),
+});

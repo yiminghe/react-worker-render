@@ -1,8 +1,12 @@
 import React from 'react';
-import type { AppComponent, WorkerRenderComponent } from './types';
+import type {
+  AppComponent,
+  ComponentPathMeta,
+  WorkerRenderComponent,
+} from './types';
 
 export type ComponentContextValue = {
-  parent: WorkerRenderComponent;
+  parent: ComponentPathMeta;
   app: AppComponent;
 };
 

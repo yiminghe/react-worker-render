@@ -1,20 +1,19 @@
 import React from 'react';
-export const nativeComponents: Record<string, React.ComponentClass> = {};
 
-nativeComponents.div = getNativeComponentClass('div');
+export const nativeComponents: Record<string, React.ComponentClass> = {};
 
 export function getNativeComponentClass(name: string): React.ComponentClass {
   if (nativeComponents[name]) {
     return nativeComponents[name];
   }
 
-  class Div extends React.Component<any> {
+  class CC extends React.Component<any> {
     render() {
       return this.props.children;
     }
   }
 
-  const C: any = Div;
+  const C: any = CC;
   C.displayName = name;
   nativeComponents[name] = C;
   return C;
@@ -26,3 +25,7 @@ export function registerNativeComponentClass(
 ) {
   nativeComponents[cls] = Cls;
 }
+
+Object.assign(nativeComponents, {
+  div: getNativeComponentClass('div'),
+});

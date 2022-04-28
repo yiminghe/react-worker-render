@@ -8,7 +8,8 @@
     "type": "git",
     "url": "git@github.com:yiminghe/react-worker-render.git"
   },
-  "main": "src/index.ts",
+  "files": ["lib"],
+  "main": "lib/index",
   "scripts": {
     "lint-fix": "yarn run lint --fix",
     "lint": "yarn run eslint . --ext .ts",
@@ -30,9 +31,6 @@
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "fs-extra": "^10.0.1",
-    "pika-plugin-build-web-babel": "^0.11.2",
-    "pika-plugin-clean-dist-src": "^0.1.1",
-    "pika-plugin-ts-types": "^0.1.5",
     "prettier": "2.x",
     "typescript": "^4.6.2"
   },

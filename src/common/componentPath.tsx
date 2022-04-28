@@ -1,8 +1,8 @@
 import ComponentContext, { ComponentContextValue } from './ComponentContext';
 import React from 'react';
-import { WorkerRenderComponent } from './types';
+import { ComponentPathMeta } from './types';
 
-function getComponentContext(instance: WorkerRenderComponent) {
+function getComponentContext(instance: ComponentPathMeta) {
   if (!instance.componentContext) {
     instance.componentContext = {
       parent: instance,
@@ -18,7 +18,7 @@ const componentPath = {
     ComponentClass.contextType = ComponentContext;
   },
 
-  updateComponentPath(instance: WorkerRenderComponent) {
+  updateComponentPath(instance: ComponentPathMeta) {
     const { parent } = instance.context as ComponentContextValue;
     const { componentChildIndexMap } = parent;
     if (componentChildIndexMap.has(instance)) {
@@ -30,7 +30,7 @@ const componentPath = {
     }
   },
 
-  getComponentPath(instance: WorkerRenderComponent) {
+  getComponentPath(instance: ComponentPathMeta) {
     if (!instance.componentPath) {
       const { parent } = instance.context as ComponentContextValue;
       instance.componentPath = `${componentPath.getComponentPath(parent)}-${
@@ -41,7 +41,7 @@ const componentPath = {
   },
 
   renderWithComponentContext(
-    instance: WorkerRenderComponent,
+    instance: ComponentPathMeta,
     element: React.ReactNode,
   ) {
     instance.componentChildIndex = 0;

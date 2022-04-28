@@ -11,11 +11,12 @@ import {
 import { nativeComponents } from './nativeComponentClass';
 import { getComponentClass } from './getComponentClass';
 import noopRender from './noopRender';
+import { noop, cleanFuncJson } from '../common/utils';
+
 class App
   extends React.Component<{ channel: MessageChannel }>
   implements AppComponent
 {
-  id: string;
   componentIndex = 0;
   componentPath = '1';
   componentChildIndex = 0;
@@ -25,18 +26,11 @@ class App
   pendingIdStateMap: Record<string, any> = {};
   newComponentIds: Set<string> = new Set();
   components: Map<string, WorkerRenderComponent> = new Map();
-  eventHandles: Record<string, () => void>;
-  componentSpec = null!;
   scheduled = false;
   componentNameDefaultPropsMap: Record<string, string> = {};
 
-  componentName = '';
-
   constructor(props: any) {
     super(props);
-    this.eventHandles = {};
-    this.id = '1';
-    this.addComponent(this);
     this.props.channel.onMessage = this.onMessage;
   }
   onMessage = (e: any) => {
@@ -50,9 +44,7 @@ class App
   postMessage(msg: FromWorkerMsg) {
     this.props.channel.postMessage(JSON.stringify(msg));
   }
-  callMethod() {
-    return;
-  }
+
   afterSendToRender() {
     this.pendingIdStateMap = {};
     this.newComponentIds.clear();
@@ -88,22 +80,14 @@ class App
         delete pendingIdStateMap[id];
       }
     }
-    for (const id of Object.keys(newComponentsIdStateMap)) {
-      if (!components.has(id)) {
-        delete newComponentsIdStateMap[id];
-      }
-    }
-
-    for (const path of Object.keys(newComponentsPathIdMap)) {
-      const id: string = newComponentsPathIdMap[path];
-      if (!components.has(id)) {
-        delete newComponentsIdStateMap[path];
-      }
-    }
 
     for (const id of Array.from(this.newComponentIds)) {
       const component = components.get(id)!;
       const { componentName } = component;
+
+      newComponentsIdStateMap[id] = component.state.state;
+      newComponentsPathIdMap[componentPath.getComponentPath(component)] = id;
+
       if (!componentNameDefaultPropsMap[componentName]) {
         componentNameDefaultPropsMap[componentName] =
           getComponentDesc(componentName).defaultProps || {};
@@ -113,10 +97,12 @@ class App
     }
 
     this.postMessage({
-      newComponentsIdStateMap,
+      newComponentsIdStateMap: cleanFuncJson(newComponentsIdStateMap),
       newComponentsPathIdMap,
-      pendingIdStateMap,
-      newComponentNameDefaultPropsMap,
+      pendingIdStateMap: cleanFuncJson(pendingIdStateMap),
+      newComponentNameDefaultPropsMap: cleanFuncJson(
+        newComponentNameDefaultPropsMap,
+      ),
     });
   }
   setStateState(component: WorkerRenderComponent, state: any) {
@@ -138,21 +124,16 @@ class App
     this.newComponentIds.delete(component.id);
     this.components.delete(component.id);
   }
-  getNativeEventHandle = (name: string) => {
-    return name;
-  };
-  getComponentEventHandle = (name: string) => {
-    return name;
-  };
+
   render(): React.ReactNode {
     const componentDesc = getComponentDesc('main');
-    const element = componentDesc.render({
+    const element = componentDesc.render.call({
       native: nativeComponents,
       props: {},
       state: {},
-      getNativeEventHandle: this.getNativeEventHandle,
-      getComponentEventHandle: this.getComponentEventHandle,
-      getComponentClass: getComponentClass,
+      getNativeEventHandle: noop,
+      getComponentEventHandle: noop,
+      getComponent: getComponentClass,
     });
     return componentPath.renderWithComponentContext(this, element);
   }

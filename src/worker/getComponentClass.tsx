@@ -7,12 +7,16 @@ import ComponentContext, {
   ComponentContextValue,
 } from '../common/ComponentContext';
 import { WorkerComponent } from './types';
+import NativeInput from './native/Input';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
 
 let gid = 1;
 
-export function getComponentClass(name: string): React.ComponentClass {
+export function getComponentClass(
+  name: string,
+  native = false,
+): React.ComponentClass {
   if (componentClassCache[name]) {
     return componentClassCache[name];
   }
@@ -68,7 +72,10 @@ export function getComponentClass(name: string): React.ComponentClass {
       publicInstance[method](...args);
     }
 
-    setStateState = (newState: any) => {
+    setStateState = (newState: any, sendToRender = true) => {
+      if (!native) {
+        sendToRender = true;
+      }
       this.setState(({ state }) => {
         let ret: any = {};
         if (typeof newState === 'function') {
@@ -78,7 +85,9 @@ export function getComponentClass(name: string): React.ComponentClass {
             state: newState,
           };
         }
-        this.getContext().app.setStateState(this, ret.state);
+        if (sendToRender) {
+          this.getContext().app.setStateState(this, ret.state);
+        }
         return ret;
       });
     };
@@ -125,7 +134,14 @@ export function getComponentClass(name: string): React.ComponentClass {
     }
 
     getNativeEventHandle = (name: string) => {
-      return name;
+      return this.getComponentEventHandle(name);
+    };
+
+    getInstanceProps = () => {
+      return this.props;
+    };
+    getInstanceState = () => {
+      return this.state.state;
     };
 
     getComponentEventHandle = (name: string) => {
@@ -134,21 +150,22 @@ export function getComponentClass(name: string): React.ComponentClass {
         return eventHandles[name];
       }
       const publicInstance = this.publicInstance as any;
-      const handle = (...args: any) => {
+      const handle: any = (...args: any) => {
         publicInstance[name](...args);
       };
+      handle.handleName = name;
       eventHandles[name] = handle;
       return handle;
     };
 
     render(): React.ReactNode {
-      const element = componentSpec.render({
+      const element = componentSpec.render.call({
         native: nativeComponents,
         props: this.props,
         state: this.state.state,
         getNativeEventHandle: this.getNativeEventHandle,
         getComponentEventHandle: this.getComponentEventHandle,
-        getComponentClass,
+        getComponent: getComponentClass,
       });
       return componentPath.renderWithComponentContext(this, element);
     }
@@ -160,3 +177,7 @@ export function getComponentClass(name: string): React.ComponentClass {
   componentClassCache[name] = C;
   return C;
 }
+
+Object.assign(nativeComponents, {
+  input: (NativeInput as any) || getComponentClass('input', true),
+});

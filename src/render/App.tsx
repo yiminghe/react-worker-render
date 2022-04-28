@@ -11,12 +11,12 @@ import {
 import { nativeComponents } from './nativeComponentClass';
 import { getComponentClass } from './getComponentClass';
 import ReactDOM from 'react-dom';
+import { noop } from '../common/utils';
 
 class App
   extends React.Component<{ channel: MessageChannel }, { inited: boolean }>
   implements AppComponent
 {
-  id: string;
   componentIndex = 0;
   componentPath = '1';
   componentChildIndex = 0;
@@ -26,15 +26,10 @@ class App
   newComponentsIdStateMap = {};
   pendingIdStateMap = {};
   components: Map<string, WorkerRenderComponent> = new Map();
-  nativeEventHandles: Record<string, () => void>;
   componentSpec = null!;
-  componentName = '';
 
   constructor(props: any) {
     super(props);
-    this.nativeEventHandles = {};
-    this.id = '1';
-    this.addComponent(this);
     this.props.channel.onMessage = this.onMessage;
     this.state = {
       inited: false,
@@ -76,34 +71,26 @@ class App
   postMessage(msg: FromRenderMsg) {
     this.props.channel.postMessage(JSON.stringify(msg));
   }
-  callMethod() {
-    return;
-  }
+
   addComponent(component: WorkerRenderComponent) {
     this.components.set(component.id, component);
   }
   removeComponent(component: WorkerRenderComponent) {
     this.components.delete(component.id);
   }
-  getNativeEventHandle = (name: string) => {
-    return name;
-  };
-  getComponentEventHandle = (name: string) => {
-    return name;
-  };
-  setStateState() {
-    return;
-  }
+
+  setStateState = noop;
+
   render(): React.ReactNode {
     if (this.state.inited) {
       const componentDesc = getComponentDesc('main');
-      const element = componentDesc.render({
+      const element = componentDesc.render.call({
         native: nativeComponents,
         props: {},
         state: {},
-        getNativeEventHandle: this.getNativeEventHandle,
-        getComponentEventHandle: this.getComponentEventHandle,
-        getComponentClass: getComponentClass,
+        getNativeEventHandle: noop,
+        getComponentEventHandle: noop,
+        getComponent: getComponentClass,
       });
       return componentPath.renderWithComponentContext(this, element);
     } else {

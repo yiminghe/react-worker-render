@@ -1,21 +1,29 @@
 import React from 'react';
 import type { ComponentContextValue } from './ComponentContext';
 
-export interface WorkerRenderComponent extends React.Component<any, any> {
-  id: string;
-  componentName: string;
+export interface ComponentPathMeta<P = any, S = any>
+  extends React.Component<P, S> {
   componentContext?: ComponentContextValue;
   componentChildIndex: number;
-  componentChildIndexMap: Map<WorkerRenderComponent, number>;
+  componentChildIndexMap: Map<ComponentPathMeta, number>;
   componentIndex: number;
   componentPath: string;
+}
+
+export interface WorkerRenderComponent<P = any, S = any>
+  extends ComponentPathMeta<P, S> {
+  id: string;
+  componentName: string;
+  getInstanceState(): any;
+  getInstanceProps(): any;
   componentSpec: WorkerRenderComponentSpec;
   callMethod(method: string, args: any[]): void;
 }
 export type ComponentPath = string;
 export type ComponentId = string;
 
-export interface AppComponent extends WorkerRenderComponent {
+export interface AppComponent<P = any, S = any>
+  extends ComponentPathMeta<P, S> {
   postMessage(msg: any): void;
   componentNameDefaultPropsMap: Record<string, string>;
   newComponentsPathIdMap: Record<ComponentPath, ComponentId>;
@@ -30,14 +38,15 @@ export interface WorkerRenderComponentSpec
     React.StaticLifecycle<any, any> {
   getInitialState?: () => any;
   defaultProps?: any;
-  render: (args: {
+  render: (this: {
     native: Record<string, React.ComponentClass>;
     props: any;
     state: any;
-    getComponentClass: (name: string) => React.ComponentClass;
+    getComponent: (name: string) => React.ComponentClass;
     getNativeEventHandle: (name: string) => any;
     getComponentEventHandle: (name: string) => any;
   }) => React.ReactNode;
+  [k: string]: any;
 }
 
 export interface MessageChannel {
