@@ -38,6 +38,7 @@ export function getComponentClass(name: string): React.ComponentClass {
         __self: this,
         state: {},
       };
+      this.publicInstance = Object.create(componentSpec);
       Object.defineProperty(this.publicInstance, 'props', {
         get: this.getInstanceProps,
       });
@@ -61,6 +62,17 @@ export function getComponentClass(name: string): React.ComponentClass {
         return { state };
       }
       return {};
+    }
+
+    setStateState(newState: any) {
+      this.setState(({ state }) => {
+        return {
+          state: {
+            ...state,
+            ...newState,
+          },
+        };
+      });
     }
 
     getInstanceProps = () => {
@@ -136,5 +148,5 @@ export function getComponentClass(name: string): React.ComponentClass {
 }
 
 Object.assign(nativeComponents, {
-  input: (Input as any) || getComponentClass('input'),
+  Input: (Input as any) || getComponentClass('input'),
 });

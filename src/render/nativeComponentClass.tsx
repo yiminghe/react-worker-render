@@ -2,7 +2,7 @@ import React from 'react';
 import { Div } from './native/Div';
 
 export const nativeComponents: Record<string, React.ComponentClass> = {
-  div: Div,
+  Div,
 };
 
 export function getNativeComponentClass(cls: string) {

@@ -4,17 +4,16 @@ import { getComponentDesc } from '../common/register';
 import {
   AppComponent,
   WorkerRenderComponent,
-  MessageChannel,
+  WorkerLike,
   FromWorkerMsg,
   FromRenderMsg,
 } from '../common/types';
-import { nativeComponents } from './nativeComponentClass';
 import { getComponentClass } from './getComponentClass';
 import noopRender from './noopRender';
-import { noop, cleanFuncJson } from '../common/utils';
+import { cleanFuncJson } from '../common/utils';
 
 class App
-  extends React.Component<{ channel: MessageChannel }>
+  extends React.Component<{ worker: WorkerLike }>
   implements AppComponent
 {
   componentIndex = 0;
@@ -31,10 +30,11 @@ class App
 
   constructor(props: any) {
     super(props);
-    this.props.channel.onMessage = this.onMessage;
+    this.props.worker.onmessage = this.onmessage;
   }
-  onMessage = (e: any) => {
+  onmessage = (e: any) => {
     const msg: FromRenderMsg = JSON.parse(e.data);
+    console.log('from render', msg);
     const { componentId, method, args } = msg;
     const component = this.components.get(componentId)!;
     noopRender.batchedUpdates(() => {
@@ -42,7 +42,8 @@ class App
     });
   };
   postMessage(msg: FromWorkerMsg) {
-    this.props.channel.postMessage(JSON.stringify(msg));
+    console.log('send to render', msg);
+    this.props.worker.postMessage(JSON.stringify(msg));
   }
 
   afterSendToRender() {
@@ -62,6 +63,10 @@ class App
       this.afterSendToRender();
       this.scheduled = false;
     });
+  }
+
+  componentDidMount() {
+    this.scheduleSendToRender();
   }
 
   sendToRender() {
@@ -85,7 +90,7 @@ class App
       const component = components.get(id)!;
       const { componentName } = component;
 
-      newComponentsIdStateMap[id] = component.state.state;
+      newComponentsIdStateMap[id] = component.getInstanceState();
       newComponentsPathIdMap[componentPath.getComponentPath(component)] = id;
 
       if (!componentNameDefaultPropsMap[componentName]) {
@@ -113,6 +118,7 @@ class App
     const current = pendingIdStateMap[component.id] || {};
     Object.assign(current, state);
     pendingIdStateMap[component.id] = current;
+    this.scheduleSendToRender();
   }
   addComponent(component: WorkerRenderComponent) {
     if (!this.components.has(component.id)) {
@@ -126,16 +132,8 @@ class App
   }
 
   render(): React.ReactNode {
-    const componentDesc = getComponentDesc('main');
-    const element = componentDesc.render.call({
-      native: nativeComponents,
-      props: {},
-      state: {},
-      getNativeEventHandle: noop,
-      getComponentEventHandle: noop,
-      getComponent: getComponentClass,
-    });
-    return componentPath.renderWithComponentContext(this, element);
+    const Main = getComponentClass('app');
+    return componentPath.renderWithComponentContext(this, <Main />);
   }
 }
 

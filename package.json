@@ -8,8 +8,13 @@
     "type": "git",
     "url": "git@github.com:yiminghe/react-worker-render.git"
   },
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "main": "lib/index",
+  "workspaces": [
+    "example"
+  ],
   "scripts": {
     "lint-fix": "yarn run lint --fix",
     "lint": "yarn run eslint . --ext .ts",

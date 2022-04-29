@@ -27,5 +27,5 @@ export function registerNativeComponentClass(
 }
 
 Object.assign(nativeComponents, {
-  div: getNativeComponentClass('div'),
+  Div: getNativeComponentClass('div'),
 });

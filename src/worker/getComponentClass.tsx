@@ -8,6 +8,7 @@ import ComponentContext, {
 } from '../common/ComponentContext';
 import { WorkerComponent } from './types';
 import NativeInput from './native/Input';
+import { noop } from '../common/utils';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
 
@@ -44,9 +45,8 @@ export function getComponentClass(
     constructor(props: any) {
       super(props);
       this.id = '';
-      this.publicInstance = {
-        setState: this.setStateState,
-      } as any;
+      this.publicInstance = Object.create(componentSpec);
+      this.publicInstance.setState = this.setStateState;
       Object.defineProperty(this.publicInstance, 'props', {
         get: () => {
           return this.props;
@@ -58,13 +58,16 @@ export function getComponentClass(
         },
       });
       this.eventHandles = {};
-      if (componentSpec.getInitialState) {
-        componentSpec.getInitialState.call(this.publicInstance);
-      }
       this.state = {
         __self: this,
         state: {},
       };
+      if (componentSpec.getInitialState) {
+        const state = componentSpec.getInitialState.call(this.publicInstance);
+        if (state) {
+          (this.state as any).state = state;
+        }
+      }
     }
 
     callMethod(method: string, args: any[]): void {
@@ -109,6 +112,7 @@ export function getComponentClass(
         Object.assign(state, newState);
         return { state };
       }
+      return {};
     }
 
     getContext() {
@@ -179,5 +183,5 @@ export function getComponentClass(
 }
 
 Object.assign(nativeComponents, {
-  input: (NativeInput as any) || getComponentClass('input', true),
+  Input: (NativeInput as any) || getComponentClass('input', true),
 });

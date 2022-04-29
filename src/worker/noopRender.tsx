@@ -28,6 +28,7 @@ const HostConfig: any = {
   removeChild: noop,
   removeChildFromContainer: noop,
   resetTextContent: noop,
+  clearContainer: noop,
 };
 
 let Render: any;

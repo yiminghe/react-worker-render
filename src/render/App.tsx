@@ -1,20 +1,18 @@
 import componentPath from '../common/componentPath';
 import React from 'react';
-import { getComponentDesc } from '../common/register';
 import {
   AppComponent,
   WorkerRenderComponent,
-  MessageChannel,
+  WorkerLike,
   FromWorkerMsg,
   FromRenderMsg,
 } from '../common/types';
-import { nativeComponents } from './nativeComponentClass';
 import { getComponentClass } from './getComponentClass';
 import ReactDOM from 'react-dom';
 import { noop } from '../common/utils';
 
 class App
-  extends React.Component<{ channel: MessageChannel }, { inited: boolean }>
+  extends React.Component<{ worker: WorkerLike }, { inited: boolean }>
   implements AppComponent
 {
   componentIndex = 0;
@@ -30,13 +28,14 @@ class App
 
   constructor(props: any) {
     super(props);
-    this.props.channel.onMessage = this.onMessage;
+    this.props.worker.onmessage = this.onmessage;
     this.state = {
       inited: false,
     };
   }
-  onMessage = (e: any) => {
+  onmessage = (e: any) => {
     const msg: FromWorkerMsg = JSON.parse(e.data);
+    console.log('from worker', msg);
     const {
       newComponentsIdStateMap,
       newComponentsPathIdMap,
@@ -64,12 +63,13 @@ class App
       for (const id of Object.keys(pendingIdStateMap)) {
         const state = pendingIdStateMap[id];
         const component = components.get(id)!;
-        component.setState(state);
+        component.setStateState(state);
       }
     });
   };
   postMessage(msg: FromRenderMsg) {
-    this.props.channel.postMessage(JSON.stringify(msg));
+    console.log('send to worker', msg);
+    this.props.worker.postMessage(JSON.stringify(msg));
   }
 
   addComponent(component: WorkerRenderComponent) {
@@ -83,16 +83,8 @@ class App
 
   render(): React.ReactNode {
     if (this.state.inited) {
-      const componentDesc = getComponentDesc('main');
-      const element = componentDesc.render.call({
-        native: nativeComponents,
-        props: {},
-        state: {},
-        getNativeEventHandle: noop,
-        getComponentEventHandle: noop,
-        getComponent: getComponentClass,
-      });
-      return componentPath.renderWithComponentContext(this, element);
+      const Main = getComponentClass('app');
+      return componentPath.renderWithComponentContext(this, <Main />);
     } else {
       return null;
     }

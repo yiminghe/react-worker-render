@@ -14,6 +14,7 @@ export interface WorkerRenderComponent<P = any, S = any>
   extends ComponentPathMeta<P, S> {
   id: string;
   componentName: string;
+  setStateState(state: any): void;
   getInstanceState(): any;
   getInstanceProps(): any;
   componentSpec: WorkerRenderComponentSpec;
@@ -49,9 +50,9 @@ export interface WorkerRenderComponentSpec
   [k: string]: any;
 }
 
-export interface MessageChannel {
+export interface WorkerLike {
   postMessage(msg: string): void;
-  onMessage(msg: string): void;
+  onmessage: ((e: any) => void) | null;
 }
 
 export interface FromWorkerMsg {

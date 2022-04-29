@@ -30,6 +30,7 @@ class Input extends React.Component<InputProps, InputState> {
         value: nextProps.value,
       };
     }
+    return {};
   }
   onChange = (e: any) => {
     const { value } = e;
