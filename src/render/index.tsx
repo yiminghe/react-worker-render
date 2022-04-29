@@ -1,17 +1,16 @@
 import { registerComponent } from '../common/register';
 import App from './App';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { WorkerLike } from '../common/types';
 
 export { registerComponent };
 
 export function bootstrap({
   worker,
-  container,
+  render,
 }: {
   worker: WorkerLike;
-  container: HTMLElement;
+  render: (element: React.ReactChild) => void;
 }) {
-  ReactDOM.render(<App worker={worker} />, container);
+  render(<App worker={worker} />);
 }
