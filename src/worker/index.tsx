@@ -9,3 +9,5 @@ export { registerComponent };
 export function bootstrap({ worker }: { worker: WorkerLike }) {
   noopRender.create(<App worker={worker} />);
 }
+
+export { registerNativeComponent } from './nativeComponent';

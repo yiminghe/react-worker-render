@@ -1,12 +1,12 @@
 import React from 'react';
 import { getComponentDesc } from '../common/register';
 import { FromRenderMsg, WorkerRenderComponent } from '../common/types';
-import { nativeComponents } from './nativeComponentClass';
+import { nativeComponents } from './nativeComponent';
 import componentPath from '../common/componentPath';
 import ComponentContext, {
   ComponentContextValue,
 } from '../common/ComponentContext';
-import Input from './native/Input';
+import Input from './nativeComponents/Input';
 import { noop } from '../common/utils';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
@@ -129,7 +129,7 @@ export function getComponentClass(name: string): React.ComponentClass {
 
     render(): React.ReactNode {
       const element = componentSpec.render.call({
-        native: nativeComponents,
+        nativeComponents,
         props: this.props,
         state: this.state.state,
         getNativeEventHandle: this.getNativeEventHandle,

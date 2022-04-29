@@ -19,7 +19,7 @@ export function getNativeComponentClass(name: string): React.ComponentClass {
   return C;
 }
 
-export function registerNativeComponentClass(
+export function registerNativeComponent(
   cls: string,
   Cls: React.ComponentClass,
 ) {

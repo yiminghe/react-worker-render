@@ -40,7 +40,7 @@ export interface WorkerRenderComponentSpec
   getInitialState?: () => any;
   defaultProps?: any;
   render: (this: {
-    native: Record<string, React.ComponentClass>;
+    nativeComponents: Record<string, React.ComponentClass>;
     props: any;
     state: any;
     getComponent: (name: string) => React.ComponentClass;

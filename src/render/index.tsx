@@ -14,3 +14,5 @@ export function bootstrap({
 }) {
   render(<App worker={worker} />);
 }
+
+export { registerNativeComponent } from './nativeComponent';

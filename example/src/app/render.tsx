@@ -1,5 +1,5 @@
 export default function render(this: any) {
-  const { Div } = this.native;
+  const { Div } = this.nativeComponents;
   return (
     <Div
       style={{ border: '1px solid red', padding: 10, userSelect: 'none' }}
