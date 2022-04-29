@@ -7,7 +7,6 @@ move react component lifecycle to worker
 
 ```
 yarn
-cd example
 yarn start
 ```
 

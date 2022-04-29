@@ -16,6 +16,7 @@
     "example"
   ],
   "scripts": {
+    "start":"cd example && yarn start",
     "lint-fix": "yarn run lint --fix",
     "lint": "yarn run eslint . --ext .ts",
     "check": "yarn run lint && tsc --noEmit",
