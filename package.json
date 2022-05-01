@@ -1,6 +1,6 @@
 {
   "name": "react-worker-render",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "move react component lifecycle to worker",
   "author": "yiminghe <yiminghe@gmail.com>",
   "license": "MIT",
