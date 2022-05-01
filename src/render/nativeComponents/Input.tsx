@@ -18,9 +18,12 @@ class Input extends React.Component<InputProps, InputState> {
     super(props);
     this.state = {
       value: props.value,
-      seq: props.seq || 1,
+      seq: props.seq,
     };
   }
+  static defaultProps = {
+    seq: 1,
+  };
   static getDerivedStateFromProps(
     nextProps: InputProps,
     prevState: InputState,

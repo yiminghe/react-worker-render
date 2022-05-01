@@ -1,7 +1,9 @@
 export default function render(this: any) {
   const { Div, Input } = this.nativeComponents;
+  const Title = this.getComponent('title');
   return (
     <>
+      <Title />
       <Div>
         set(number):{' '}
         <Input
@@ -10,7 +12,12 @@ export default function render(this: any) {
         />
       </Div>
       <Div
-        style={{ border: '1px solid red', padding: 10, userSelect: 'none' }}
+        style={{
+          border: '1px solid red',
+          margin: 10,
+          padding: 10,
+          userSelect: 'none',
+        }}
         onClick={this.getEventHandle('onClick')}
       >
         click to increment: {this.state.count}

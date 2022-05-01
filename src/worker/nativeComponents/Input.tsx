@@ -4,6 +4,7 @@ export default registerComponent('input', {
   getInitialState() {
     return {
       value: this.props.value,
+      seq: 1,
     };
   },
   onChange(e: any) {
