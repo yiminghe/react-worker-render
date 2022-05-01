@@ -4,7 +4,9 @@ import titleRender from './title/render';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 
-ReactRender.registerComponent('app', {
+const entry = 'app';
+
+ReactRender.registerComponent(entry, {
   render,
 });
 
@@ -19,6 +21,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 
 ReactRender.bootstrap({
   worker,
+  entry,
   render(element: React.ReactChild) {
     root.render(element);
   },

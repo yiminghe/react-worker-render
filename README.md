@@ -39,8 +39,9 @@ import { ReactWorker } from 'react-worker-render';
 ```ts
 export declare function registerNativeComponent(cls: string, Cls: React.ComponentClass): void;
 export declare function registerComponent(name: string, desc: WorkerRenderComponentSpec): void;
-export declare function bootstrap({ worker }: {
+export declare function bootstrap(params: {
     worker: WorkerLike;
+    entry: string;
 }): void;
 ```
 
@@ -53,8 +54,9 @@ import { ReactRender } from 'react-worker-render';
 ```ts
 export declare function registerComponent(name: string, desc: {render:WorkerRenderComponentSpec['render']}): void;
 export declare function registerNativeComponent(cls: string, Cls: React.ComponentClass): void;
-export declare function bootstrap({ worker, render, }: {
+export declare function bootstrap(params: {
     worker: WorkerLike;
+    entry: string;
     render: (element: React.ReactChild) => void;
 }): void;
 ```

@@ -14,7 +14,7 @@ import { cleanFuncJson } from '../common/utils';
 import { log } from '../common/log';
 
 class App
-  extends React.Component<{ worker: WorkerLike }>
+  extends React.Component<{ worker: WorkerLike; entry: string }>
   implements AppComponent
 {
   componentIndex = 0;
@@ -133,8 +133,8 @@ class App
   }
 
   render(): React.ReactNode {
-    const Main = getComponentClass('app');
-    return componentPath.renderWithComponentContext(this, <Main />);
+    const Entry = getComponentClass(this.props.entry);
+    return componentPath.renderWithComponentContext(this, <Entry />);
   }
 }
 

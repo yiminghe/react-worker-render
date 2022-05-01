@@ -6,8 +6,14 @@ import { WorkerLike } from '../common/types';
 
 export { registerComponent };
 
-export function bootstrap({ worker }: { worker: WorkerLike }) {
-  noopRender.create(<App worker={worker} />);
+export function bootstrap({
+  worker,
+  entry,
+}: {
+  worker: WorkerLike;
+  entry: string;
+}) {
+  noopRender.create(<App worker={worker} entry={entry} />);
 }
 
 export { registerNativeComponent } from './nativeComponent';

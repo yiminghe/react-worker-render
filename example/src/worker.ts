@@ -4,7 +4,9 @@ import render from './app/render';
 import titleLifecycle from './title/lifecycle';
 import titleRender from './title/render';
 
-ReactWorker.registerComponent('app', {
+const entry = 'app';
+
+ReactWorker.registerComponent(entry, {
   ...lifecycle,
   render,
 });
@@ -16,4 +18,5 @@ ReactWorker.registerComponent('title', {
 
 ReactWorker.bootstrap({
   worker: self,
+  entry,
 });
