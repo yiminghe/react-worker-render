@@ -1,6 +1,6 @@
 {
   "name": "react-worker-render",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "move react component lifecycle to worker",
   "author": "yiminghe <yiminghe@gmail.com>",
   "license": "MIT",
@@ -12,14 +12,18 @@
     "lib"
   ],
   "main": "lib/index",
+  "module": "lib/index",
   "workspaces": [
     "example"
   ],
   "scripts": {
+    "test":"echo 0",
+    "pub":"yarn run compile && npm publish",
+    "compile":"tsc",
     "start":"cd example && yarn start",
     "lint-fix": "yarn run lint --fix",
     "lint": "yarn run eslint . --ext .ts",
-    "check": "yarn run lint && tsc --noEmit",
+    "check": "rm -rf lib && yarn run lint && tsc --noEmit && cd example && tsc --noEmit",
     "prettier": "prettier --write \"{src,scripts,example}/**/*.{js,tsx,ts,jsx}\""
   },
   "devDependencies": {

@@ -11,6 +11,7 @@ import {
 import { getComponentClass } from './getComponentClass';
 import noopRender from './noopRender';
 import { cleanFuncJson } from '../common/utils';
+import { log } from '../common/log';
 
 class App
   extends React.Component<{ worker: WorkerLike }>
@@ -34,7 +35,7 @@ class App
   }
   onmessage = (e: any) => {
     const msg: FromRenderMsg = JSON.parse(e.data);
-    console.log('from render', msg);
+    log('from render', msg);
     const { componentId, method, args } = msg;
     const component = this.components.get(componentId)!;
     noopRender.batchedUpdates(() => {
@@ -42,7 +43,7 @@ class App
     });
   };
   postMessage(msg: FromWorkerMsg) {
-    console.log('send to render', msg);
+    log('send to render', msg);
     this.props.worker.postMessage(JSON.stringify(msg));
   }
 

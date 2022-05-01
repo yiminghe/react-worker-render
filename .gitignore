@@ -21,6 +21,7 @@
 # production
 /build
 /pkg
+/lib
 
 # misc
 .DS_Store

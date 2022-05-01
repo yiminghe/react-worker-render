@@ -26,7 +26,7 @@ export function getComponentClass(name: string): React.ComponentClass {
     componentPath = '';
     componentChildIndex = 0;
     componentChildIndexMap = new Map();
-    nativeEventHandles: Record<string, () => void> = {};
+    eventHandles: Record<string, () => void> = {};
     componentSpec = componentSpec;
     componentName = name;
     static contextType = ComponentContext;
@@ -105,13 +105,13 @@ export function getComponentClass(name: string): React.ComponentClass {
       this.getContext().app.removeComponent(this);
     }
 
-    getNativeEventHandle = (name: string) => {
-      const { nativeEventHandles } = this;
+    getEventHandle = (name: string) => {
+      const { eventHandles } = this;
       const { app } = this.context as ComponentContextValue;
-      if (nativeEventHandles[name]) {
-        return nativeEventHandles[name];
+      if (eventHandles[name]) {
+        return eventHandles[name];
       }
-      nativeEventHandles[name] = (...args: any) => {
+      eventHandles[name] = (...args: any) => {
         const msg: FromRenderMsg = {
           componentId: this.id,
           method: name,
@@ -119,12 +119,8 @@ export function getComponentClass(name: string): React.ComponentClass {
         };
         app.postMessage(msg);
       };
-      (nativeEventHandles as any).handleName = name;
-      return nativeEventHandles[name];
-    };
-
-    getComponentEventHandle = (name: string) => {
-      return name;
+      (eventHandles as any).handleName = name;
+      return eventHandles[name];
     };
 
     render(): React.ReactNode {
@@ -132,8 +128,7 @@ export function getComponentClass(name: string): React.ComponentClass {
         nativeComponents,
         props: this.props,
         state: this.state.state,
-        getNativeEventHandle: this.getNativeEventHandle,
-        getComponentEventHandle: this.getComponentEventHandle,
+        getEventHandle: this.getEventHandle,
         getComponent: getComponentClass,
       });
       return componentPath.renderWithComponentContext(this, element);

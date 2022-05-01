@@ -44,8 +44,7 @@ export interface WorkerRenderComponentSpec
     props: any;
     state: any;
     getComponent: (name: string) => React.ComponentClass;
-    getNativeEventHandle: (name: string) => any;
-    getComponentEventHandle: (name: string) => any;
+    getEventHandle: (name: string) => any;
   }) => React.ReactNode;
   [k: string]: any;
 }

@@ -10,6 +10,7 @@ import {
 import { getComponentClass } from './getComponentClass';
 import ReactDOM from 'react-dom';
 import { noop } from '../common/utils';
+import { log } from '../common/log';
 
 class App
   extends React.Component<{ worker: WorkerLike }, { inited: boolean }>
@@ -35,7 +36,7 @@ class App
   }
   onmessage = (e: any) => {
     const msg: FromWorkerMsg = JSON.parse(e.data);
-    console.log('from worker', msg);
+    log('from worker', msg);
     const {
       newComponentsIdStateMap,
       newComponentsPathIdMap,
@@ -68,7 +69,7 @@ class App
     });
   };
   postMessage(msg: FromRenderMsg) {
-    console.log('send to worker', msg);
+    log('send to worker', msg);
     this.props.worker.postMessage(JSON.stringify(msg));
   }
 

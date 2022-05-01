@@ -137,10 +137,6 @@ export function getComponentClass(
       this.getContext().app.removeComponent(this);
     }
 
-    getNativeEventHandle = (name: string) => {
-      return this.getComponentEventHandle(name);
-    };
-
     getInstanceProps = () => {
       return this.props;
     };
@@ -148,7 +144,7 @@ export function getComponentClass(
       return this.state.state;
     };
 
-    getComponentEventHandle = (name: string) => {
+    getEventHandle = (name: string) => {
       const { eventHandles } = this;
       if (eventHandles[name]) {
         return eventHandles[name];
@@ -167,8 +163,7 @@ export function getComponentClass(
         nativeComponents,
         props: this.props,
         state: this.state.state,
-        getNativeEventHandle: this.getNativeEventHandle,
-        getComponentEventHandle: this.getComponentEventHandle,
+        getEventHandle: this.getEventHandle,
         getComponent: getComponentClass,
       });
       return componentPath.renderWithComponentContext(this, element);
