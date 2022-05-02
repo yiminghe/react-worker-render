@@ -24,8 +24,13 @@ export function getComponentClass(
 
   const componentSpec = getComponentDesc(name);
 
+  interface State {
+    __state: any;
+    __self: Component;
+  }
+
   class Component
-    extends React.Component<any, { state: any; __self: Component }>
+    extends React.Component<any, State>
     implements WorkerRenderComponent
   {
     id: string;
@@ -48,24 +53,20 @@ export function getComponentClass(
       this.publicInstance = Object.create(componentSpec);
       this.publicInstance.setState = this.setStateState;
       Object.defineProperty(this.publicInstance, 'props', {
-        get: () => {
-          return this.props;
-        },
+        get: this.getInstanceProps,
       });
       Object.defineProperty(this.publicInstance, 'state', {
-        get: () => {
-          return this.state.state;
-        },
+        get: this.getInstanceState,
       });
       this.eventHandles = {};
       this.state = {
         __self: this,
-        state: {},
+        __state: {},
       };
       if (componentSpec.getInitialState) {
         const state = componentSpec.getInitialState.call(this.publicInstance);
         if (state) {
-          (this.state as any).state = state;
+          (this.state as State).__state = state;
         }
       }
     }
@@ -83,23 +84,26 @@ export function getComponentClass(
       if (!native) {
         sendToRender = true;
       }
-      this.setState(({ state }) => {
-        let ret: any = {};
+      this.setState(({ __state }) => {
+        let retState: any = {};
         if (typeof newState === 'function') {
-          ret = { state: newState(state) };
+          retState = newState(__state);
         } else {
-          ret = {
-            state: newState,
-          };
+          retState = newState;
         }
         if (sendToRender) {
-          this.getContext().app.setStateState(this, ret.state);
+          this.getContext().app.setStateState(this, retState);
         }
-        return ret;
+        return {
+          __state: {
+            ...__state,
+            ...retState,
+          },
+        };
       }, callback);
     };
 
-    static getDerivedStateFromProps(nextProps: any, { __self }: any) {
+    static getDerivedStateFromProps(nextProps: any, { __self }: State) {
       const instance: Component = __self;
       componentPath.updateComponentPath(instance);
       const { app } = instance.context as ComponentContextValue;
@@ -108,13 +112,17 @@ export function getComponentClass(
         app.addComponent(instance);
       }
       if (instance.componentSpec.getDerivedStateFromProps) {
-        const state = { ...instance.state.state };
+        const state = instance.getInstanceState();
         const newState = instance.componentSpec.getDerivedStateFromProps(
           nextProps,
           state,
         );
-        Object.assign(state, newState);
-        return { state };
+        return {
+          __state: {
+            ...state,
+            ...newState,
+          },
+        };
       }
       return {};
     }
@@ -132,7 +140,7 @@ export function getComponentClass(
       componentSpec.componentDidUpdate?.call(
         publicInstance,
         prevProps,
-        prevState.state,
+        prevState.__state,
       );
     }
 
@@ -145,7 +153,7 @@ export function getComponentClass(
       return this.props;
     };
     getInstanceState = () => {
-      return this.state.state;
+      return this.state.__state;
     };
 
     getEventHandle = (name: string) => {
@@ -166,7 +174,7 @@ export function getComponentClass(
       const element = componentSpec.render.call({
         nativeComponents,
         props: this.props,
-        state: this.state.state,
+        state: this.getInstanceState(),
         getEventHandle: this.getEventHandle,
         getComponent: getComponentClass,
       });

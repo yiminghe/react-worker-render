@@ -18,8 +18,13 @@ export function getComponentClass(name: string): React.ComponentClass {
 
   const componentSpec = getComponentDesc(name);
 
+  interface State {
+    __state: any;
+    __self: Component;
+  }
+
   class Component
-    extends React.Component<any, { state: any; __self: Component }>
+    extends React.Component<any, State>
     implements WorkerRenderComponent
   {
     componentIndex = 0;
@@ -36,7 +41,7 @@ export function getComponentClass(name: string): React.ComponentClass {
       super(props);
       this.state = {
         __self: this,
-        state: {},
+        __state: {},
       };
       this.publicInstance = Object.create(componentSpec);
       Object.defineProperty(this.publicInstance, 'props', {
@@ -46,7 +51,7 @@ export function getComponentClass(name: string): React.ComponentClass {
         get: this.getInstanceState,
       });
     }
-    static getDerivedStateFromProps(_: any, { __self }: any) {
+    static getDerivedStateFromProps(_: any, { __self }: State) {
       const instance: Component = __self;
       componentPath.updateComponentPath(instance);
       let state;
@@ -59,16 +64,16 @@ export function getComponentClass(name: string): React.ComponentClass {
         }
         app.addComponent(instance);
         state = app.newComponentsIdStateMap[instance.id] || {};
-        return { state };
+        return { __state: state };
       }
       return {};
     }
 
     setStateState(newState: any) {
-      this.setState(({ state }) => {
+      this.setState(({ __state }) => {
         return {
-          state: {
-            ...state,
+          __state: {
+            ...__state,
             ...newState,
           },
         };
@@ -79,7 +84,7 @@ export function getComponentClass(name: string): React.ComponentClass {
       return this.props;
     };
     getInstanceState() {
-      return this.state.state;
+      return this.state.__state;
     }
     getContext() {
       return this.context as ComponentContextValue;
@@ -91,12 +96,12 @@ export function getComponentClass(name: string): React.ComponentClass {
 
     callMethod = noop;
 
-    componentDidUpdate(prevProps: any, prevState: any) {
+    componentDidUpdate(prevProps: any, prevState: State) {
       const { publicInstance } = this;
       componentSpec.componentDidUpdate?.call(
         publicInstance,
         prevProps,
-        prevState.state,
+        prevState.__state,
       );
     }
 
@@ -127,7 +132,7 @@ export function getComponentClass(name: string): React.ComponentClass {
       const element = componentSpec.render.call({
         nativeComponents,
         props: this.props,
-        state: this.state.state,
+        state: this.getInstanceState(),
         getEventHandle: this.getEventHandle,
         getComponent: getComponentClass,
       });

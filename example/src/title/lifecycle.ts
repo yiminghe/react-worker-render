@@ -4,6 +4,7 @@ export default {
   },
   getInitialState() {
     return {
+      title: 'react-worker-render',
       now: this.props.defaultId,
     };
   },

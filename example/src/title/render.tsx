@@ -10,7 +10,7 @@ export default function render(this: any) {
       }}
       onClick={this.getEventHandle('refresh')}
     >
-      react-worker-render@{this.state.now}
+      {this.state.title}@{this.state.now}
     </Div>
   );
 }
