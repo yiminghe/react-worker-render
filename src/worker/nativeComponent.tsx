@@ -28,4 +28,6 @@ export function registerNativeComponent(
 
 Object.assign(nativeComponents, {
   Div: getNativeComponentClass('div'),
+  Link: getNativeComponentClass('link'),
+  A: getNativeComponentClass('a'),
 });

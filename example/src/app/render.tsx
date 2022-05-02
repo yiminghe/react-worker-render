@@ -1,5 +1,5 @@
 export default function render(this: any) {
-  const { Div, Input } = this.nativeComponents;
+  const { Div, Input, Link, A } = this.nativeComponents;
   const Title = this.getComponent('title');
   return (
     <>
@@ -21,6 +21,20 @@ export default function render(this: any) {
         onClick={this.getEventHandle('onClick')}
       >
         click to increment: {this.state.count}
+      </Div>
+      <Link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
+      />
+      <Div>
+        <A
+          className="github-fork-ribbon"
+          href="https://github.com/yiminghe/react-worker-render"
+          data-ribbon="Fork me on GitHub"
+          title="Fork me on GitHub"
+        >
+          Fork me on GitHub
+        </A>
       </Div>
     </>
   );

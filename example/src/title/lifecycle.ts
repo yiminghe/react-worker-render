@@ -1,7 +1,10 @@
 export default {
+  defaultProps: {
+    defaultId: 1,
+  },
   getInitialState() {
     return {
-      now: Date.now(),
+      now: this.props.defaultId,
     };
   },
   refresh() {

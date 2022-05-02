@@ -6,6 +6,10 @@
 
 move react component lifecycle to worker and render to dom
 
+## example
+
+https://yiminghe.github.io/react-worker-render
+
 ## API
 
 ### types
@@ -61,7 +65,7 @@ export declare function bootstrap(params: {
 }): void;
 ```
 
-## example
+## development
 
 ```
 yarn

@@ -2,6 +2,7 @@
   "name": "example",
   "private": true,
   "scripts": {
+    "build": "react-scripts build",
     "start": "react-scripts start"
   },
   "license": "MIT",
@@ -9,6 +10,7 @@
     "@yiminghe/react-scripts": "5.x",
     "typescript": "4.x"
   },
+  "homepage": "http://yiminghe.github.io/react-worker-render",
   "browserslist": {
     "production": [
       ">0.2%",
