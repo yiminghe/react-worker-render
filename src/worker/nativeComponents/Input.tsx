@@ -9,7 +9,7 @@ export default registerComponent('input', {
   },
   onChange(e: any) {
     // do not need send to render
-    this.setState(e, false);
+    this.setState(e, undefined, false);
     this.props.onChange?.(e.value);
   },
   componentDidUpdate(prevProps: any, prevState: any) {

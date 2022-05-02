@@ -75,7 +75,11 @@ export function getComponentClass(
       publicInstance[method](...args);
     }
 
-    setStateState = (newState: any, sendToRender = true) => {
+    setStateState = (
+      newState: any,
+      callback?: () => void,
+      sendToRender = true,
+    ) => {
       if (!native) {
         sendToRender = true;
       }
@@ -92,7 +96,7 @@ export function getComponentClass(
           this.getContext().app.setStateState(this, ret.state);
         }
         return ret;
-      });
+      }, callback);
     };
 
     static getDerivedStateFromProps(nextProps: any, { __self }: any) {
