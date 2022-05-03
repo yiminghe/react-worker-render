@@ -4,7 +4,7 @@
 [![NPM downloads](http://img.shields.io/npm/dm/react-worker-render.svg)](https://npmjs.org/package/react-worker-render)
 [![Build Status](https://app.travis-ci.com/yiminghe/react-worker-render.svg?branch=main)](https://app.travis-ci.com/github/yiminghe/react-worker-render)
 
-move react component lifecycle to worker and render to dom
+move react component lifecycle to worker and render to DOM.
 
 ## example
 
@@ -27,8 +27,7 @@ interface WorkerRenderComponentSpec extends React.ComponentLifecycle<any, any>, 
     }) => React.ReactNode;
     [k: string]: any;
 }
-declare function registerComponent(name: string, desc: WorkerRenderComponentSpec): void;
-export interface WorkerLike {
+interface WorkerLike {
     postMessage(msg: string): void;
     onmessage: ((e: any) => void) | null;
 }
@@ -56,8 +55,8 @@ import { ReactRender } from 'react-worker-render';
 ```
 
 ```ts
-export declare function registerComponent(name: string, desc: {render:WorkerRenderComponentSpec['render']}): void;
 export declare function registerNativeComponent(cls: string, Cls: React.ComponentClass): void;
+export declare function registerComponent(name: string, desc: {render:WorkerRenderComponentSpec['render']}): void;
 export declare function bootstrap(params: {
     worker: WorkerLike;
     entry: string;
