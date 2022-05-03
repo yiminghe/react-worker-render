@@ -2948,6 +2948,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-addons-pure-render-mixin@npm:^0.14.19":
+  version: 0.14.19
+  resolution: "@types/react-addons-pure-render-mixin@npm:0.14.19::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Freact-addons-pure-render-mixin%2F-%2Freact-addons-pure-render-mixin-0.14.19.tgz"
+  dependencies:
+    "@types/react": "*"
+  checksum: 343f1ac654a0a61d5aacf0011045013ce192cfd3cbf8f05bb925a99c03dc15255037a908b4b3c956eb68245578714c64bd1a3ae695de78990eb48d22cba2b0b0
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:^18.0.2":
   version: 18.0.2
   resolution: "@types/react-dom@npm:18.0.2::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Freact-dom%2F-%2Freact-dom-18.0.2.tgz"
@@ -12175,6 +12184,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-addons-pure-render-mixin@npm:^15.6.3":
+  version: 15.6.3
+  resolution: "react-addons-pure-render-mixin@npm:15.6.3::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freact-addons-pure-render-mixin%2F-%2Freact-addons-pure-render-mixin-15.6.3.tgz"
+  dependencies:
+    object-assign: ^4.1.0
+  checksum: 364fd35d2825eee3a424dd13727d8d879b15bcead574c558c2e616bbe729a766d11c480670dbfe9c797a8d329d1741b8ef6cd07bf7ffb9dbe1b046a8d9f418d0
+  languageName: node
+  linkType: hard
+
 "react-app-polyfill@npm:^3.0.0":
   version: 3.0.0
   resolution: "react-app-polyfill@npm:3.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freact-app-polyfill%2F-%2Freact-app-polyfill-3.0.0.tgz"
@@ -12294,6 +12312,7 @@ __metadata:
     "@types/jest": 27.x
     "@types/node": ^17.0.21
     "@types/react": ^18.0.6
+    "@types/react-addons-pure-render-mixin": ^0.14.19
     "@types/react-dom": ^18.0.2
     "@types/react-reconciler": ^0.26.6
     "@typescript-eslint/eslint-plugin": ^5.15.0
@@ -12304,6 +12323,7 @@ __metadata:
     gh-pages: ^3.2.3
     prettier: 2.x
     react: ^18.0.0
+    react-addons-pure-render-mixin: ^15.6.3
     react-dom: ^18.0.0
     react-reconciler: ^0.27.0
     typescript: ^4.6.2

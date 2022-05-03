@@ -8,6 +8,9 @@ export default {
       now: this.props.defaultId,
     };
   },
+  shouldComponentUpdate(nextProps: any, nextState: any) {
+    return nextState.now !== this.state.now;
+  },
   refresh() {
     this.setState({
       now: Date.now(),

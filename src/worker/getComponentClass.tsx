@@ -8,7 +8,6 @@ import ComponentContext, {
 } from '../common/ComponentContext';
 import { WorkerComponent } from './types';
 import NativeInput from './nativeComponents/Input';
-import { noop } from '../common/utils';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
 
@@ -69,6 +68,18 @@ export function getComponentClass(
           (this.state as State).__state = state;
         }
       }
+    }
+
+    shouldComponentUpdate(nextProps: any, nextState: State) {
+      if (componentSpec.shouldComponentUpdate) {
+        return componentSpec.shouldComponentUpdate.call(
+          this.publicInstance,
+          nextProps,
+          nextState.__state,
+          undefined,
+        );
+      }
+      return true;
     }
 
     callMethod(method: string, args: any[]): void {

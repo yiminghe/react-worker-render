@@ -8,6 +8,7 @@ import ComponentContext, {
 } from '../common/ComponentContext';
 import Input from './nativeComponents/Input';
 import { noop } from '../common/utils';
+import PureRender from 'react-addons-pure-render-mixin';
 
 const componentClassCache: Record<string, React.ComponentClass> = {};
 
@@ -51,6 +52,9 @@ export function getComponentClass(name: string): React.ComponentClass {
         get: this.getInstanceState,
       });
     }
+
+    shouldComponentUpdate = PureRender.shouldComponentUpdate;
+
     static getDerivedStateFromProps(_: any, { __self }: State) {
       const instance: Component = __self;
       componentPath.updateComponentPath(instance);
