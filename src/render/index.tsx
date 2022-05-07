@@ -9,12 +9,14 @@ export function bootstrap({
   worker,
   render,
   entry,
+  batchedUpdates,
 }: {
   entry: string;
+  batchedUpdates: (fn: () => void) => void;
   worker: WorkerLike;
   render: (element: React.ReactChild) => void;
 }) {
-  render(<App worker={worker} entry={entry} />);
+  render(<App batchedUpdates={batchedUpdates} worker={worker} entry={entry} />);
 }
 
 export { registerNativeComponent } from './nativeComponent';

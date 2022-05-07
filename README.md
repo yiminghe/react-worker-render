@@ -60,6 +60,7 @@ export declare function registerComponent(name: string, desc: {render:WorkerRend
 export declare function bootstrap(params: {
     worker: WorkerLike;
     entry: string;
+    batchedUpdates: (fn: () => void) => void;
     render: (element: React.ReactChild) => void;
 }): void;
 ```
@@ -77,4 +78,4 @@ open: http://localhost:3000/
 
 16-18
 
-App can override react/react-dom/react-reconciler version using yarn resolutions.
+App can override react/react-reconciler version using yarn resolutions.

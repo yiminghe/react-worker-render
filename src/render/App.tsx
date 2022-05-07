@@ -8,13 +8,16 @@ import {
   FromRenderMsg,
 } from '../common/types';
 import { getComponentClass } from './getComponentClass';
-import ReactDOM from 'react-dom';
 import { noop } from '../common/utils';
 import { log } from '../common/log';
 
 class App
   extends React.Component<
-    { worker: WorkerLike; entry: string },
+    {
+      worker: WorkerLike;
+      entry: string;
+      batchedUpdates: (fn: () => void) => void;
+    },
     { inited: boolean }
   >
   implements AppComponent
@@ -58,7 +61,7 @@ class App
     this.newComponentsIdStateMap = newComponentsIdStateMap;
     this.newComponentsPathIdMap = newComponentsPathIdMap;
 
-    ReactDOM.unstable_batchedUpdates(() => {
+    this.props.batchedUpdates(() => {
       if (!this.state.inited) {
         this.setState({
           inited: true,

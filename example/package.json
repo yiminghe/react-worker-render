@@ -7,7 +7,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/react-dom": "^18.0.2",
     "@yiminghe/react-scripts": "5.x",
+    "react-dom": "18.x",
     "typescript": "4.x"
   },
   "homepage": "http://yiminghe.github.io/react-worker-render",

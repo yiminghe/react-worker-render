@@ -3,6 +3,7 @@ import render from './app/render';
 import titleRender from './title/render';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 const entry = 'app';
 
@@ -22,6 +23,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 ReactRender.bootstrap({
   worker,
   entry,
+  batchedUpdates: ReactDOM.unstable_batchedUpdates,
   render(element: React.ReactChild) {
     root.render(element);
   },

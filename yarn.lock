@@ -6632,6 +6632,7 @@ __metadata:
   resolution: "example@workspace:example"
   dependencies:
     "@yiminghe/react-scripts": 5.x
+    react-dom: 18.x
     typescript: 4.x
   languageName: unknown
   linkType: soft
@@ -12239,15 +12240,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.0.0":
-  version: 18.0.0
-  resolution: "react-dom@npm:18.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freact-dom%2F-%2Freact-dom-18.0.0.tgz"
+"react-dom@npm:18.x":
+  version: 18.1.0
+  resolution: "react-dom@npm:18.1.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Freact-dom%2F-%2Freact-dom-18.1.0.tgz"
   dependencies:
     loose-envify: ^1.1.0
-    scheduler: ^0.21.0
+    scheduler: ^0.22.0
   peerDependencies:
-    react: ^18.0.0
-  checksum: dd0ba9f2f31dd728076c892a95b2f5a8dfe79136431b0289afb46eec39d0ca6b6f0f40a60fd8aa6ef702c98ce7c26100d3d4dbc35c7c9e87429cd04f84cb58bd
+    react: ^18.1.0
+  checksum: bb0d48eeb0b297c79c2a03978baa29f5b3ff7ba3d070b21e34c9af1a6e7fdf0ca8b8d73e41f9214d91ad40eeb6d1f3559f884cbbc338713374a51320637c23df
   languageName: node
   linkType: hard
 
@@ -12324,7 +12325,6 @@ __metadata:
     prettier: 2.x
     react: ^18.0.0
     react-addons-pure-render-mixin: ^15.6.3
-    react-dom: ^18.0.0
     react-reconciler: ^0.27.0
     typescript: ^4.6.2
   languageName: unknown
@@ -12889,6 +12889,15 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: 4f8285076041ed2c81acdd1faa987f1655fdbd30554bc667c1ea64743fc74fb3a04ca7d27454b3d678735df5a230137a3b84756061b43dc5796e80701b66d124
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.22.0":
+  version: 0.22.0
+  resolution: "scheduler@npm:0.22.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2Fscheduler%2F-%2Fscheduler-0.22.0.tgz"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: a8ef5cab769c020cd6382ad9ecc3f72dbde56a50a36639b3a42ad9c11f7724f03700bcad373044059b8067d4a6365154dc7c0ca8027ef20ff4900cf58a0fc2c5
   languageName: node
   linkType: hard
 
