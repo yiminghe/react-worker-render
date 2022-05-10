@@ -51,10 +51,19 @@ export interface WorkerRenderComponentSpec
 
 export interface WorkerLike {
   postMessage(msg: string): void;
-  onmessage: ((e: any) => void) | null;
+  addEventListener: (
+    type: 'message',
+    fn: (e: { data: string }) => void,
+  ) => void;
+  removeEventListener: (
+    type: 'message',
+    fn: (e: { data: string }) => void,
+  ) => void;
 }
 
+export const MSG_TYPE = 'react-worker-render';
 export interface FromWorkerMsg {
+  type: typeof MSG_TYPE;
   newComponentNameDefaultPropsMap: Record<string, string>;
   pendingIdStateMap: Record<string, string>;
   newComponentsPathIdMap: Record<string, string>;
@@ -62,6 +71,7 @@ export interface FromWorkerMsg {
 }
 
 export interface FromRenderMsg {
+  type: typeof MSG_TYPE;
   componentId: string;
   method: string;
   args: any[];

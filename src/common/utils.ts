@@ -16,3 +16,11 @@ export function cleanFuncJson(json: any) {
   }
   return ret;
 }
+
+export function safeJsonParse(str: string) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return {};
+  }
+}

@@ -7,10 +7,11 @@ import {
   WorkerLike,
   FromWorkerMsg,
   FromRenderMsg,
+  MSG_TYPE,
 } from '../common/types';
 import { getComponentClass } from './getComponentClass';
 import noopRender from './noopRender';
-import { cleanFuncJson } from '../common/utils';
+import { cleanFuncJson, safeJsonParse } from '../common/utils';
 import { log } from '../common/log';
 
 class App
@@ -31,10 +32,13 @@ class App
 
   constructor(props: any) {
     super(props);
-    this.props.worker.onmessage = this.onmessage;
+    this.props.worker.addEventListener('message', this.onmessage);
   }
-  onmessage = (e: any) => {
-    const msg: FromRenderMsg = JSON.parse(e.data);
+  onmessage = (e: { data: string }) => {
+    const msg: FromRenderMsg = safeJsonParse(e.data);
+    if (msg.type !== MSG_TYPE) {
+      return;
+    }
     log('from render', msg);
     const { componentId, method, args } = msg;
     const component = this.components.get(componentId)!;
@@ -70,6 +74,10 @@ class App
     this.scheduleSendToRender();
   }
 
+  componentWillUnmount() {
+    this.props.worker.removeEventListener('message', this.onmessage);
+  }
+
   sendToRender() {
     const {
       components,
@@ -103,6 +111,7 @@ class App
     }
 
     this.postMessage({
+      type: MSG_TYPE,
       newComponentsIdStateMap: cleanFuncJson(newComponentsIdStateMap),
       newComponentsPathIdMap,
       pendingIdStateMap: cleanFuncJson(pendingIdStateMap),

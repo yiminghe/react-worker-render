@@ -1,6 +1,10 @@
 import React from 'react';
 import { getComponentDesc } from '../common/register';
-import { FromRenderMsg, WorkerRenderComponent } from '../common/types';
+import {
+  FromRenderMsg,
+  MSG_TYPE,
+  WorkerRenderComponent,
+} from '../common/types';
 import { nativeComponents } from './nativeComponent';
 import componentPath from '../common/componentPath';
 import ComponentContext, {
@@ -122,6 +126,7 @@ export function getComponentClass(name: string): React.ComponentClass {
       }
       eventHandles[name] = (...args: any) => {
         const msg: FromRenderMsg = {
+          type: MSG_TYPE,
           componentId: this.id,
           method: name,
           args,

@@ -6,9 +6,10 @@ import {
   WorkerLike,
   FromWorkerMsg,
   FromRenderMsg,
+  MSG_TYPE,
 } from '../common/types';
 import { getComponentClass } from './getComponentClass';
-import { noop } from '../common/utils';
+import { noop, safeJsonParse } from '../common/utils';
 import { log } from '../common/log';
 
 class App
@@ -35,13 +36,16 @@ class App
 
   constructor(props: any) {
     super(props);
-    this.props.worker.onmessage = this.onmessage;
+    this.props.worker.addEventListener('message', this.onmessage);
     this.state = {
       inited: false,
     };
   }
   onmessage = (e: any) => {
-    const msg: FromWorkerMsg = JSON.parse(e.data);
+    const msg: FromWorkerMsg = safeJsonParse(e.data);
+    if (msg.type !== MSG_TYPE) {
+      return;
+    }
     log('from worker', msg);
     const {
       newComponentsIdStateMap,
@@ -87,6 +91,10 @@ class App
   }
 
   setStateState = noop;
+
+  componentWillUnmount() {
+    this.props.worker.removeEventListener('message', this.onmessage);
+  }
 
   render(): React.ReactNode {
     if (this.state.inited) {
