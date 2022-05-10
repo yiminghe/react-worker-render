@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.js": "/react-worker-render/static/js/main.1f0b686d.js",
-    "static/js/446.c7bb92cc.chunk.js": "/react-worker-render/static/js/446.c7bb92cc.chunk.js",
-    "static/js/306.d7500dd9.chunk.js": "/react-worker-render/static/js/306.d7500dd9.chunk.js",
+    "main.js": "/react-worker-render/static/js/main.b0819a89.js",
+    "static/js/386.43582bdb.chunk.js": "/react-worker-render/static/js/386.43582bdb.chunk.js",
+    "static/js/741.50109eb7.chunk.js": "/react-worker-render/static/js/741.50109eb7.chunk.js",
     "index.html": "/react-worker-render/index.html",
-    "main.1f0b686d.js.map": "/react-worker-render/static/js/main.1f0b686d.js.map",
-    "446.c7bb92cc.chunk.js.map": "/react-worker-render/static/js/446.c7bb92cc.chunk.js.map",
-    "306.d7500dd9.chunk.js.map": "/react-worker-render/static/js/306.d7500dd9.chunk.js.map"
+    "main.b0819a89.js.map": "/react-worker-render/static/js/main.b0819a89.js.map",
+    "386.43582bdb.chunk.js.map": "/react-worker-render/static/js/386.43582bdb.chunk.js.map",
+    "741.50109eb7.chunk.js.map": "/react-worker-render/static/js/741.50109eb7.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.1f0b686d.js"
+    "static/js/main.b0819a89.js"
   ]
 }
