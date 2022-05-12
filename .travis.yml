@@ -11,7 +11,7 @@ before_install:
   - corepack enable
 
 install:
-  - yarn
+  - yarn run bootstrap
 
 script:
   - yarn check

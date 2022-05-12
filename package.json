@@ -13,15 +13,13 @@
   ],
   "main": "lib/index",
   "module": "lib/index",
-  "workspaces": [
-    "example"
-  ],
   "scripts": {
+    "bootstrap": "yarn && cd example && yarn",
     "deploy": "yarn run build && gh-pages -d example/build",
     "pub": "yarn run compile && npm publish",
     "compile": "tsc",
-    "build": "yarn workspace example build",
-    "start": "yarn workspace example start",
+    "build": "cd example && yarn build",
+    "start": "cd example && yarn start",
     "lint-fix": "yarn run lint --fix",
     "lint": "yarn run eslint . --ext .ts",
     "test": "cypress run",

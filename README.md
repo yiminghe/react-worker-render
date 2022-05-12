@@ -69,7 +69,7 @@ export declare function bootstrap(params: {
 ## development
 
 ```
-yarn
+yarn run bootstrap
 yarn start
 ```
 
