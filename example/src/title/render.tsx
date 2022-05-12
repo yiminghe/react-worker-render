@@ -2,6 +2,7 @@ export default function render(this: any) {
   const { Div } = this.nativeComponents;
   return (
     <Div
+      id="t-title"
       style={{
         border: '1px solid red',
         padding: 10,

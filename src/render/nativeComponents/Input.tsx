@@ -51,7 +51,10 @@ class Input extends React.Component<InputProps, InputState> {
     this.props.onChange(current);
   };
   render() {
-    return <input value={this.state.value} onChange={this.onChange} />;
+    const { value, onChange, seq, ...rest } = this.props;
+    return (
+      <input {...rest} value={this.state.value} onChange={this.onChange} />
+    );
   }
 }
 
@@ -59,6 +62,7 @@ export default registerComponent('input', {
   render() {
     return (
       <Input
+        {...this.props}
         value={this.state.value}
         seq={this.state.seq}
         onChange={this.getEventHandle('onChange')}

@@ -3,6 +3,7 @@
 [![NPM version](https://badge.fury.io/js/react-worker-render.png)](http://badge.fury.io/js/react-worker-render)
 [![NPM downloads](http://img.shields.io/npm/dm/react-worker-render.svg)](https://npmjs.org/package/react-worker-render)
 [![Build Status](https://app.travis-ci.com/yiminghe/react-worker-render.svg?branch=main)](https://app.travis-ci.com/github/yiminghe/react-worker-render)
+[![react-worker-render](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/wog843&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/wog843/runs)
 
 move react component lifecycle to worker and render to DOM.
 

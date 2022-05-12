@@ -1,6 +1,6 @@
 {
   "name": "react-worker-render",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "move react component lifecycle to worker",
   "author": "yiminghe <yiminghe@gmail.com>",
   "license": "MIT",
@@ -18,13 +18,13 @@
   ],
   "scripts": {
     "deploy": "yarn run build && gh-pages -d example/build",
-    "test": "echo 0",
     "pub": "yarn run compile && npm publish",
     "compile": "tsc",
     "build": "cd example && yarn run build",
     "start": "cd example && yarn run start",
     "lint-fix": "yarn run lint --fix",
     "lint": "yarn run eslint . --ext .ts",
+    "test": "cypress run",
     "check": "rm -rf lib && yarn run lint && tsc --noEmit && cd example && tsc --noEmit",
     "prettier": "prettier --write \"{src,scripts,example}/**/*.{js,tsx,ts,jsx}\""
   },
@@ -40,6 +40,7 @@
     "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "cypress": "^9.2.0",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "fs-extra": "^10.0.1",

@@ -13,7 +13,7 @@ export default {
   },
   refresh() {
     this.setState({
-      now: Date.now(),
+      now: this.state.now + 1,
     });
   },
 } as any;

@@ -39,3 +39,5 @@ yarn-error.log*
 tmp/
 pkg/
 node_modules/
+
+/cypress/videos/

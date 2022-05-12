@@ -7,11 +7,13 @@ export default function render(this: any) {
       <Div>
         set(number):{' '}
         <Input
+          id="t-input"
           onChange={this.getEventHandle('onChange')}
           value={this.state.count}
         />
       </Div>
       <Div
+        id="t-click"
         style={{
           border: '1px solid red',
           margin: 10,
@@ -20,7 +22,10 @@ export default function render(this: any) {
         }}
         onClick={this.getEventHandle('onClick')}
       >
-        click to increment: {this.state.count}
+        click to increment:{' '}
+        <Div style={{ display: 'inline' }} id="t-count">
+          {this.state.count}
+        </Div>
       </Div>
       <Link
         rel="stylesheet"

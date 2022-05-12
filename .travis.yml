@@ -12,5 +12,6 @@ before_install:
 
 script:
   - yarn check
-  - yarn test
-  
+  - yarn start &
+  - yarn cypress run --record --key 7ee3b205-230d-40e6-88ff-ddcadb1095a0
+  - kill $(jobs -p) || true
