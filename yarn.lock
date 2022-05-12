@@ -3577,9 +3577,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yiminghe/react-scripts@npm:5.x":
-  version: 5.0.0
-  resolution: "@yiminghe/react-scripts@npm:5.0.0::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40yiminghe%2Freact-scripts%2F-%2Freact-scripts-5.0.0.tgz"
+"@yiminghe/react-scripts@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "@yiminghe/react-scripts@npm:5.0.1::__archiveUrl=https%3A%2F%2Fregistry.npmmirror.com%2F%40yiminghe%2Freact-scripts%2F-%2Freact-scripts-5.0.1.tgz"
   dependencies:
     "@babel/core": ^7.16.0
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.3
@@ -3640,7 +3640,7 @@ __metadata:
       optional: true
   bin:
     react-scripts: bin/react-scripts.js
-  checksum: 09f190a66dd90ba0b58a32a74db0d553df51021e8102e51c6aab6d223959c8e0d1d84c1725410c5b56e1094a1fe3b453db36970ce1c5389b9c4064d93c11d3c3
+  checksum: b9ca2582120f2251990137e581f7e4610945ae81ca69fbc8a10aaa3e13915d781b9f678873133b5f610d83b0c71c27bf2bd561457694459a7e8838970af33e58
   languageName: node
   linkType: hard
 
@@ -6948,8 +6948,9 @@ __metadata:
   resolution: "example@workspace:example"
   dependencies:
     "@types/react-dom": ^18.0.2
-    "@yiminghe/react-scripts": 5.x
+    "@yiminghe/react-scripts": ^5.0.1
     react-dom: 18.x
+    react-worker-render: 0.0.x
     typescript: 4.x
   languageName: unknown
   linkType: soft
@@ -12905,7 +12906,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-worker-render@workspace:.":
+"react-worker-render@0.0.x, react-worker-render@workspace:.":
   version: 0.0.0-use.local
   resolution: "react-worker-render@workspace:."
   dependencies:

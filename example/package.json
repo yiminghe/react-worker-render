@@ -2,14 +2,15 @@
   "name": "example",
   "private": true,
   "scripts": {
-    "build": "react-scripts build",
-    "start": "react-scripts start"
+    "build": "yarn react-scripts build",
+    "start": "yarn react-scripts start"
   },
   "license": "MIT",
   "devDependencies": {
     "@types/react-dom": "^18.0.2",
-    "@yiminghe/react-scripts": "5.x",
+    "@yiminghe/react-scripts": "^5.0.1",
     "react-dom": "18.x",
+    "react-worker-render": "0.0.x",
     "typescript": "4.x"
   },
   "homepage": "http://yiminghe.github.io/react-worker-render",
