@@ -46,7 +46,7 @@
     "prettier": "2.x",
     "typescript": "^4.6.2"
   },
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.2",
   "dependencies": {
     "@types/react": "^18.0.6",
     "@types/react-addons-pure-render-mixin": "^0.14.19",
