@@ -14,7 +14,7 @@
   "main": "lib/index",
   "module": "lib/index",
   "scripts": {
-    "bootstrap": "yarn && cd example && yarn",
+    "bootstrap": "cd example && yarn",
     "deploy": "yarn run build && gh-pages -d example/build",
     "pub": "yarn run compile && npm publish",
     "compile": "tsc",
