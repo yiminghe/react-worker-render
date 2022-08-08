@@ -10,10 +10,8 @@ node_js:
 before_install:
   - corepack enable
 
-install:
-  - yarn run bootstrap
-
 script:
+  - yarn run bootstrap
   - yarn check
   - yarn start &
   - yarn cypress run --record --key 7ee3b205-230d-40e6-88ff-ddcadb1095a0
